@@ -28,7 +28,7 @@
 <meta property="og:description" content="Flask Web框架安装pip install Flask&#x3D;&#x3D;1.1.1 在pycharm里直接新建项目,选择flask项目创建,设置虚拟环境等. 解释器(interpreter) Flask – Flask库文件 Jinja2 –模板语言 MarkupSafe –返回安全标签(Flask依赖markupsafe返回安全标签) Werkzeug –(德语’工具’得意思)相当于uWSGI(应用存取">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-16T23:49:37.180Z">
-<meta property="article:modified_time" content="2020-04-20T07:21:25.089Z">
+<meta property="article:modified_time" content="2020-04-20T07:31:19.567Z">
 <meta property="article:author" content="核桃人">
 <meta property="article:tag" content="flask">
 <meta name="twitter:card" content="summary">
@@ -191,7 +191,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-20 15:21:25" itemprop="dateModified" datetime="2020-04-20T15:21:25+08:00">2020-04-20</time>
+                <time title="修改时间：2020-04-20 15:31:19" itemprop="dateModified" datetime="2020-04-20T15:31:19+08:00">2020-04-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -222,7 +222,7 @@
 <li>MarkupSafe –返回安全标签(Flask依赖markupsafe返回安全标签)</li>
 <li>Werkzeug –(德语’工具’得意思)相当于uWSGI(应用存取网关接口),底层仍为WSGI</li>
 </ul>
-<!-- 阅读更多 -->
+<a id="more"></a>
 
 <h2 id="启动Flask"><a href="#启动Flask" class="headerlink" title="启动Flask"></a>启动Flask</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">from flask import Flask # 导入Flask类创建Flask应用对象</span><br><span class="line"></span><br><span class="line">app &#x3D; Flask(__name__) # app &#x3D; application</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.route(&#39;&#x2F;&#39;) # 为Flask应用对象添加路由</span><br><span class="line">def hello_world(): # 与路由绑定得视图函数,名称保持唯一</span><br><span class="line">    return &#39;Hello World!&#39; # 相当于Django中得HttpResponse</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;: # 当前文件处于脚本状态时运行如下代码</span><br><span class="line">    app.run() # 启动Flask应用</span><br></pre></td></tr></table></figure>
 
