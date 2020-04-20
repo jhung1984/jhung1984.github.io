@@ -1,251 +1,120 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Flask Web 框架</title>
+    <url>/2020/04/17/Flask%20Web%E6%A1%86%E6%9E%B6/</url>
+    <content><![CDATA[<h1 id="Flask-Web框架"><a href="#Flask-Web框架" class="headerlink" title="Flask Web框架"></a>Flask Web框架</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><code>pip install Flask==1.1.1</code></p>
+<p>在pycharm里直接新建项目,选择flask项目创建,设置虚拟环境等.</p>
+<h2 id="解释器-interpreter"><a href="#解释器-interpreter" class="headerlink" title="解释器(interpreter)"></a>解释器(interpreter)</h2><ul>
+<li>Flask – Flask库文件</li>
+<li>Jinja2 –模板语言</li>
+<li>MarkupSafe –返回安全标签(Flask依赖markupsafe返回安全标签)</li>
+<li>Werkzeug –(德语’工具’得意思)相当于uWSGI(应用存取网关接口),底层仍为WSGI</li>
+</ul>
+<a id="more"></a>
 
-<link rel="stylesheet" href="/css/main.css">
+<h2 id="启动Flask"><a href="#启动Flask" class="headerlink" title="启动Flask"></a>启动Flask</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">from flask import Flask # 导入Flask类创建Flask应用对象</span><br><span class="line"></span><br><span class="line">app &#x3D; Flask(__name__) # app &#x3D; application</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.route(&#39;&#x2F;&#39;) # 为Flask应用对象添加路由</span><br><span class="line">def hello_world(): # 与路由绑定得视图函数,名称保持唯一</span><br><span class="line">    return &#39;Hello World!&#39; # 相当于Django中得HttpResponse</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;: # 当前文件处于脚本状态时运行如下代码</span><br><span class="line">    app.run() # 启动Flask应用</span><br></pre></td></tr></table></figure>
 
+<h2 id="Flask中的Response"><a href="#Flask中的Response" class="headerlink" title="Flask中的Response"></a>Flask中的Response</h2><ol>
+<li><p>HttpResponse “hello world!”</p>
+</li>
+<li><p>render(‘html文件’)    render_template(‘html文件’)</p>
+</li>
+<li><p>redirect(‘/home’)    redirect(‘/home’) </p>
+<p>#3xx开头根据指令做出响应</p>
+<p>#4xx 错误 客户端</p>
+<p>#5xx 错误 服务器</p>
+<p>#302 HTTP status  ResponseHeaders中加入一个Localtion:<a href="http://url" target="_blank" rel="noopener">http://url</a></p>
+</li>
+<li><p>send_file(‘文件路径’)    返回文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@app.route(&#39;&#x2F;get_file&#39;)</span><br><span class="line">def get_file():</span><br><span class="line">    return send_file(&#39;1.jpg&#39;)</span><br></pre></td></tr></table></figure>
 
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<p>#打开并返回文件内容.Content-Type:可以被客户端识别得文件类型.</p>
+<p>#在ResponseHeaders中加入,不能识别得类型,下载处理.</p>
+</li>
+<li><p>jsonify(‘字符串或数据类型’)    返回JSON字符串</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@app.route(&#39;&#x2F;get_json&#39;)</span><br><span class="line">def get_json():</span><br><span class="line">    d &#x3D; &#123;d</span><br><span class="line">        &#39;name&#39;:&#39;Alexander.DSB.Li&#39;</span><br><span class="line">    &#125;</span><br><span class="line">    return jsonify(d)</span><br></pre></td></tr></table></figure>
 
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"jhung1984.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
-  </script>
-
-  <meta name="description" content="1. 什么是shellshell是一个程序，它接受从键盘输入的命令，然后把命令传递给操作系统去执行。bash是来自GNU项目的shell程序。bash是“Bourne Again Shell”的首字母缩写。bash是最初Unix上由Steve Bourne写成shell程序sh的增强版。 1.1. shell技巧移动光标：借助上箭头按键获得上次输入的命令.借助左右按键把光标定位到命令行的任意位">
-<meta property="og:type" content="article">
-<meta property="og:title" content="the linux command line">
-<meta property="og:url" content="https://jhung1984.github.io/2020/04/19/linux-command-line/index.html">
-<meta property="og:site_name" content="核桃人的博客">
-<meta property="og:description" content="1. 什么是shellshell是一个程序，它接受从键盘输入的命令，然后把命令传递给操作系统去执行。bash是来自GNU项目的shell程序。bash是“Bourne Again Shell”的首字母缩写。bash是最初Unix上由Steve Bourne写成shell程序sh的增强版。 1.1. shell技巧移动光标：借助上箭头按键获得上次输入的命令.借助左右按键把光标定位到命令行的任意位">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://jhung1984.github.io/2020/04/19/linux-command-line/1.jpg">
-<meta property="article:published_time" content="2020-04-19T00:19:07.986Z">
-<meta property="article:modified_time" content="2020-04-20T19:43:04.633Z">
-<meta property="article:author" content="核桃人">
-<meta property="article:tag" content="linux">
-<meta property="article:tag" content="shell">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://jhung1984.github.io/2020/04/19/linux-command-line/1.jpg">
-
-<link rel="canonical" href="https://jhung1984.github.io/2020/04/19/linux-command-line/">
-
-
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
-
-  <title>the linux command line | 核桃人的博客</title>
-  
+<p>#Content-Type:appliaction/json 返回标准格式的JSON字符串</p>
+<p>#直接返回dict时,本质上在执行jsonify()</p>
+</li>
+</ol>
+<h2 id="Flask中的request"><a href="#Flask中的request" class="headerlink" title="Flask中的request"></a>Flask中的request</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@app.route(&#39;&#x2F;login&#39;, methods&#x3D;[&#39;POST&#39;,&#39;GET&#39;])</span><br><span class="line">def login():</span><br><span class="line">    return render_template(&#39;login.html&#39;)</span><br></pre></td></tr></table></figure>
 
 
 
+<p><code>methods=[&#39;GET&#39;,&#39;POST&#39;]</code>在路由的装饰器中允许请求方式.</p>
+<ol>
+<li><p><code>request.form.to_dict()</code>获取FormData中得数据to_dict(),ImmutableMultiDict</p>
+</li>
+<li><p>request.methods 获取请求方式</p>
+</li>
+<li><p>request.args.get(‘id) 获取URL中得数据字符串.支持get(‘key’)和to_dict()</p>
+</li>
+<li><p>request.files.get(‘my_file’) 提取文件.获取一个FileStorage Flask文件特殊对象.</p>
+<p>my_file.save(my_file.filename)</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">""</span> <span class="attr">method</span>=<span class="string">"post"</span> <span class="attr">enctype</span>=<span class="string">"multipart/form-data"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">            username:</span><br><span class="line">            <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"'username"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">name</span>=<span class="string">"my_file"</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">value</span>=<span class="string">"登录"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 
 
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
-
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">核桃人的博客</h1>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-        <i class="fa fa-search fa-fw fa-lg"></i>
-    </div>
-  </div>
-</div>
-
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
-      </li>
-  </ul>
-</nav>
-
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div id="search-result">
-  <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
-
-</div>
-    </header>
-
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
-
-    
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://jhung1984.github.io/2020/04/19/linux-command-line/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="核桃人">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="核桃人的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          the linux command line
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-04-19 08:19:07" itemprop="dateCreated datePublished" datetime="2020-04-19T08:19:07+08:00">2020-04-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-21 03:43:04" itemprop="dateModified" datetime="2020-04-21T03:43:04+08:00">2020-04-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-        <img src="/2020/04/19/linux-command-line/1.jpg" class="" title="linux-command-line">
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>flask</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>firefox无法安装扩展插件</title>
+    <url>/2020/04/17/firefox/</url>
+    <content><![CDATA[<h2 id="扩展插件被阻止安装。"><a href="#扩展插件被阻止安装。" class="headerlink" title="扩展插件被阻止安装。"></a>扩展插件被阻止安装。</h2><p>Firefox Developer Edition已阻止此网站安装未经验证的附加组件。</p>
+<p>在地址栏中输入<code>about:config</code> 按x找到 xpinstall.signatures.required 设置为false.</p>
+]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>firefox</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>npm 换源</title>
+    <url>/2020/04/17/npm%20%E6%8D%A2%E6%BA%90/</url>
+    <content><![CDATA[<h2 id="国内源"><a href="#国内源" class="headerlink" title="国内源"></a>国内源</h2><ul>
+<li>淘宝npm镜像<ul>
+<li>搜索地址: <a href="http://npm.taobao.org" target="_blank" rel="noopener">http://npm.taobao.org</a></li>
+<li>registry地址: <a href="http://registry.npm.taobao.org" target="_blank" rel="noopener">http://registry.npm.taobao.org</a></li>
+</ul>
+</li>
+<li>cnpmjs镜像<ul>
+<li>搜索地址: <a href="http://cnpmjs.org" target="_blank" rel="noopener">http://cnpmjs.org</a></li>
+<li>registry地址: <a href="http://r.cnpmjs.org" target="_blank" rel="noopener">http://r.cnpmjs.org</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><ul>
+<li>临时使用<ul>
+<li>npm –registry <a href="https://registry.npm.taobao.org" target="_blank" rel="noopener">https://registry.npm.taobao.org</a> install express</li>
+</ul>
+</li>
+<li>永久使用<ul>
+<li>npm config set registry <a href="https://registry.npm.taobao.org" target="_blank" rel="noopener">https://registry.npm.taobao.org</a></li>
+</ul>
+</li>
+<li>使用cnpm<ul>
+<li>npm install -g cnpm –registry=<a href="https://registry.npm.taobao.org" target="_blank" rel="noopener">https://registry.npm.taobao.org</a></li>
+</ul>
+</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>the linux command line</title>
+    <url>/2020/04/19/linux-command-line/</url>
+    <content><![CDATA[<img src="/2020/04/19/linux-command-line/1.jpg" class="" title="linux-command-line">
 
 <h2 id="1-什么是shell"><a href="#1-什么是shell" class="headerlink" title="1. 什么是shell"></a>1. 什么是shell</h2><p>shell是一个程序，它接受从键盘输入的命令，然后把命令传递给操作系统去执行。<br>bash是来自GNU项目的shell程序。<br>bash是“Bourne Again Shell”的首字母缩写。<br>bash是最初Unix上由Steve Bourne写成shell程序sh的增强版。</p>
 <h3 id="1-1-shell技巧"><a href="#1-1-shell技巧" class="headerlink" title="1.1. shell技巧"></a>1.1. shell技巧</h3><p>移动光标：借助上箭头按键获得上次输入的命令.借助左右按键把光标定位到命令行的任意位置。<br>tab：tab按键具有文件/目录/命令的补全功能。</p>
@@ -1633,204 +1502,13 @@ fi</code></pre><p>通过应用正则表达式,我们能够限制 INT 的值只�
 if [[ $FILE == foo.* ]]; then
 echo &quot;$FILE matches pattern &apos;foo.*&apos;&quot;
 fi</code></pre><p>这就使 [[ ]] 有助于计算文件和路径名。</p>
-<h3 id="27-5-为整数设计"><a href="#27-5-为整数设计" class="headerlink" title="27.5 (()) 为整数设计"></a>27.5 (()) 为整数设计</h3>
-    </div>
-
-    
-    
-    
-
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/linux/" rel="tag"># linux</a>
-              <a href="/tags/shell/" rel="tag"># shell</a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2020/04/17/Flask%20Web%E6%A1%86%E6%9E%B6/" rel="prev" title="Flask Web 框架">
-      <i class="fa fa-chevron-left"></i> Flask Web 框架
-    </a></div>
-      <div class="post-nav-item"></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
-  
-
-
-
-          </div>
-          
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-什么是shell"><span class="nav-number">1.</span> <span class="nav-text">1. 什么是shell</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-shell技巧"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. shell技巧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-shell命令"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. shell命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-linux系统中的目录"><span class="nav-number">2.</span> <span class="nav-text">2. linux系统中的目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-符号链接"><span class="nav-number">3.</span> <span class="nav-text">3. 符号链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-命令的使用"><span class="nav-number">4.</span> <span class="nav-text">4. 命令的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-命令的识别"><span class="nav-number">4.1.</span> <span class="nav-text">4.1. 命令的识别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-命令的文档"><span class="nav-number">4.2.</span> <span class="nav-text">4.2. 命令的文档</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-1-help"><span class="nav-number">4.2.1.</span> <span class="nav-text">4.2.1. help</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-2-man"><span class="nav-number">4.2.2.</span> <span class="nav-text">4.2.2. man</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-3-apropos"><span class="nav-number">4.2.3.</span> <span class="nav-text">4.2.3. apropos</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-4-whatis-显示非常简介的命令说明"><span class="nav-number">4.2.4.</span> <span class="nav-text">4.2.4. whatis  显示非常简介的命令说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-5-info"><span class="nav-number">4.2.5.</span> <span class="nav-text">4.2.5. info</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-6-README和其它程序文档"><span class="nav-number">4.2.6.</span> <span class="nav-text">4.2.6. README和其它程序文档</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-7-创建自己的命令"><span class="nav-number">4.2.7.</span> <span class="nav-text">4.2.7. 创建自己的命令</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-重定向"><span class="nav-number">5.</span> <span class="nav-text">5. 重定向</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-shell命令"><span class="nav-number">5.1.</span> <span class="nav-text">5.1. shell命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-标准输出重定向"><span class="nav-number">5.2.</span> <span class="nav-text">5.2. 标准输出重定向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-标准错误重定向"><span class="nav-number">5.3.</span> <span class="nav-text">5.3. 标准错误重定向</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-1-重定向标准输出和错误到同一文件"><span class="nav-number">5.3.1.</span> <span class="nav-text">5.3.1. 重定向标准输出和错误到同一文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-2-处理不需要的输出"><span class="nav-number">5.3.2.</span> <span class="nav-text">5.3.2. 处理不需要的输出</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-标准输入重定向"><span class="nav-number">5.4.</span> <span class="nav-text">5.4. 标准输入重定向</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-4-1-管道线"><span class="nav-number">5.4.1.</span> <span class="nav-text">5.4.1. 管道线</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-4-2-过滤器"><span class="nav-number">5.4.2.</span> <span class="nav-text">5.4.2. 过滤器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-4-3-uniq"><span class="nav-number">5.4.3.</span> <span class="nav-text">5.4.3. uniq</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-5-wc"><span class="nav-number">5.5.</span> <span class="nav-text">5.5. wc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-6-grep"><span class="nav-number">5.6.</span> <span class="nav-text">5.6. grep</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-7-head-tail"><span class="nav-number">5.7.</span> <span class="nav-text">5.7. head &#x2F; tail</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-8-tee"><span class="nav-number">5.8.</span> <span class="nav-text">5.8. tee</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-从shell眼中看世界"><span class="nav-number">6.</span> <span class="nav-text">6. 从shell眼中看世界</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-字符展开"><span class="nav-number">6.1.</span> <span class="nav-text">6.1. 字符展开</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-路径名展开"><span class="nav-number">6.2.</span> <span class="nav-text">6.2. 路径名展开</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-波浪线展开"><span class="nav-number">6.3.</span> <span class="nav-text">6.3. 波浪线展开</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-算术表达式展开"><span class="nav-number">6.4.</span> <span class="nav-text">6.4. 算术表达式展开</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-5-花括号展开"><span class="nav-number">6.5.</span> <span class="nav-text">6.5. 花括号展开</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-6-参数展开"><span class="nav-number">6.6.</span> <span class="nav-text">6.6. 参数展开</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-7-命令替换"><span class="nav-number">6.7.</span> <span class="nav-text">6.7. 命令替换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-8-引用"><span class="nav-number">6.8.</span> <span class="nav-text">6.8. 引用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-8-1-双引号"><span class="nav-number">6.8.1.</span> <span class="nav-text">6.8.1. 双引号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-8-2-单引号"><span class="nav-number">6.8.2.</span> <span class="nav-text">6.8.2. 单引号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-8-3-转义字符"><span class="nav-number">6.8.3.</span> <span class="nav-text">6.8.3. 转义字符</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-键盘高级操作技巧"><span class="nav-number">7.</span> <span class="nav-text">7. 键盘高级操作技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-命令行编辑"><span class="nav-number">7.1.</span> <span class="nav-text">7.1. 命令行编辑</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-1-移动光标"><span class="nav-number">7.1.1.</span> <span class="nav-text">7.1.1. 移动光标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-2-修改文本"><span class="nav-number">7.1.2.</span> <span class="nav-text">7.1.2. 修改文本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-3-剪切和粘贴文本"><span class="nav-number">7.1.3.</span> <span class="nav-text">7.1.3. 剪切和粘贴文本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-4-自动补全"><span class="nav-number">7.1.4.</span> <span class="nav-text">7.1.4. 自动补全</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-利用历史命令"><span class="nav-number">7.2.</span> <span class="nav-text">7.2. 利用历史命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-搜索历史命令"><span class="nav-number">7.3.</span> <span class="nav-text">7.3. 搜索历史命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-4-历史命令展开"><span class="nav-number">7.4.</span> <span class="nav-text">7.4. 历史命令展开</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-权限"><span class="nav-number">8.</span> <span class="nav-text">8. 权限</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-拥有者-组成员和其他人"><span class="nav-number">8.1.</span> <span class="nav-text">8.1. 拥有者,组成员和其他人</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-读取写入和执行"><span class="nav-number">8.2.</span> <span class="nav-text">8.2. 读取写入和执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-chmod更改文件模式"><span class="nav-number">8.3.</span> <span class="nav-text">8.3. chmod更改文件模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-4-umask设置默认权限"><span class="nav-number">8.4.</span> <span class="nav-text">8.4. umask设置默认权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-5-更改身份"><span class="nav-number">8.5.</span> <span class="nav-text">8.5. 更改身份</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-6-chown更改文件所有者和用户组"><span class="nav-number">8.6.</span> <span class="nav-text">8.6. chown更改文件所有者和用户组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-7-chgrp更改用户组所有权"><span class="nav-number">8.7.</span> <span class="nav-text">8.7. chgrp更改用户组所有权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-8-更改用户密码"><span class="nav-number">8.8.</span> <span class="nav-text">8.8. 更改用户密码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-进程"><span class="nav-number">9.</span> <span class="nav-text">9. 进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-进程是怎样工作的"><span class="nav-number">9.1.</span> <span class="nav-text">9.1. 进程是怎样工作的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-查看进程"><span class="nav-number">9.2.</span> <span class="nav-text">9.2. 查看进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-3-用top命令动态查看进程"><span class="nav-number">9.3.</span> <span class="nav-text">9.3. 用top命令动态查看进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-4-控制进程"><span class="nav-number">9.4.</span> <span class="nav-text">9.4. 控制进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-5-中断一个进程"><span class="nav-number">9.5.</span> <span class="nav-text">9.5. 中断一个进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-6-把一个进程放置到后台执行"><span class="nav-number">9.6.</span> <span class="nav-text">9.6. 把一个进程放置到后台执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-7-进程返回到前台"><span class="nav-number">9.7.</span> <span class="nav-text">9.7. 进程返回到前台</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-8-停止一个进程"><span class="nav-number">9.8.</span> <span class="nav-text">9.8. 停止一个进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-9-Signals"><span class="nav-number">9.9.</span> <span class="nav-text">9.9. Signals</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-10-通过killall命令给多个进程发送信号"><span class="nav-number">9.10.</span> <span class="nav-text">9.10. 通过killall命令给多个进程发送信号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-11-更多和进程相关的命令"><span class="nav-number">9.11.</span> <span class="nav-text">9.11. 更多和进程相关的命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-shell环境"><span class="nav-number">10.</span> <span class="nav-text">10. shell环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#10-1-什么存储在环境变量中"><span class="nav-number">10.1.</span> <span class="nav-text">10.1. 什么存储在环境变量中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-2-检查环境变量"><span class="nav-number">10.2.</span> <span class="nav-text">10.2. 检查环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-3-一些有趣的变量"><span class="nav-number">10.3.</span> <span class="nav-text">10.3. 一些有趣的变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-4-如何建立shell环境"><span class="nav-number">10.4.</span> <span class="nav-text">10.4. 如何建立shell环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-5-一个启动文件的内容"><span class="nav-number">10.5.</span> <span class="nav-text">10.5. 一个启动文件的内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-6-修改shell环境"><span class="nav-number">10.6.</span> <span class="nav-text">10.6. 修改shell环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-7-我们应该修改哪个文件"><span class="nav-number">10.7.</span> <span class="nav-text">10.7. 我们应该修改哪个文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-8-文本编辑器"><span class="nav-number">10.8.</span> <span class="nav-text">10.8. 文本编辑器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-9-使用文本编辑器"><span class="nav-number">10.9.</span> <span class="nav-text">10.9. 使用文本编辑器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-10-激活修改"><span class="nav-number">10.10.</span> <span class="nav-text">10.10. 激活修改</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-vi简介"><span class="nav-number">11.</span> <span class="nav-text">11. vi简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#11-1-学习vi"><span class="nav-number">11.1.</span> <span class="nav-text">11.1. 学习vi</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-2-vi背景介绍"><span class="nav-number">11.2.</span> <span class="nav-text">11.2. vi背景介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-3-启动和停止vi"><span class="nav-number">11.3.</span> <span class="nav-text">11.3. 启动和停止vi</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-4-插入模式"><span class="nav-number">11.4.</span> <span class="nav-text">11.4. 插入模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-5-保存"><span class="nav-number">11.5.</span> <span class="nav-text">11.5. 保存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-6-移动光标"><span class="nav-number">11.6.</span> <span class="nav-text">11.6. 移动光标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-7-基本编辑"><span class="nav-number">11.7.</span> <span class="nav-text">11.7. 基本编辑</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#11-7-1-追加文本"><span class="nav-number">11.7.1.</span> <span class="nav-text">11.7.1. 追加文本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-7-2-打开一行"><span class="nav-number">11.7.2.</span> <span class="nav-text">11.7.2. 打开一行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-7-3-删除文本"><span class="nav-number">11.7.3.</span> <span class="nav-text">11.7.3. 删除文本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-7-4-剪切-复制和粘贴文本"><span class="nav-number">11.7.4.</span> <span class="nav-text">11.7.4. 剪切,复制和粘贴文本</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-8-查找和替换"><span class="nav-number">11.8.</span> <span class="nav-text">11.8. 查找和替换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#11-8-1-查找一行"><span class="nav-number">11.8.1.</span> <span class="nav-text">11.8.1. 查找一行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-8-2-查找整个文件"><span class="nav-number">11.8.2.</span> <span class="nav-text">11.8.2. 查找整个文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-8-3-全局查找和替代"><span class="nav-number">11.8.3.</span> <span class="nav-text">11.8.3. 全局查找和替代</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-9-编辑多个文件"><span class="nav-number">11.9.</span> <span class="nav-text">11.9. 编辑多个文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-10-保存工作"><span class="nav-number">11.10.</span> <span class="nav-text">11.10. 保存工作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-自定制shell提示符"><span class="nav-number">12.</span> <span class="nav-text">12. 自定制shell提示符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#12-1-解剖一个提示符"><span class="nav-number">12.1.</span> <span class="nav-text">12.1. 解剖一个提示符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-2-一些可替代的提示符设计"><span class="nav-number">12.2.</span> <span class="nav-text">12.2. 一些可替代的提示符设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-3-添加颜色"><span class="nav-number">12.3.</span> <span class="nav-text">12.3. 添加颜色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-4-移动光标"><span class="nav-number">12.4.</span> <span class="nav-text">12.4. 移动光标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-5-保存提示符"><span class="nav-number">12.5.</span> <span class="nav-text">12.5. 保存提示符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-软件包管理"><span class="nav-number">13.</span> <span class="nav-text">13. 软件包管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#13-1-打包系统"><span class="nav-number">13.1.</span> <span class="nav-text">13.1. 打包系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-2-软件包管理系统工作原理"><span class="nav-number">13.2.</span> <span class="nav-text">13.2. 软件包管理系统工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-3-包文件"><span class="nav-number">13.3.</span> <span class="nav-text">13.3. 包文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-4-资源库"><span class="nav-number">13.4.</span> <span class="nav-text">13.4. 资源库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-5-依赖性"><span class="nav-number">13.5.</span> <span class="nav-text">13.5. 依赖性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-6-上层和底层软件包工具"><span class="nav-number">13.6.</span> <span class="nav-text">13.6. 上层和底层软件包工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-7-常见软件包管理任务"><span class="nav-number">13.7.</span> <span class="nav-text">13.7. 常见软件包管理任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-8-查找资源库中的软件包"><span class="nav-number">13.8.</span> <span class="nav-text">13.8. 查找资源库中的软件包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-9-从资源库中安装一个软件包"><span class="nav-number">13.9.</span> <span class="nav-text">13.9. 从资源库中安装一个软件包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-10-通过软件包文件来安装软件"><span class="nav-number">13.10.</span> <span class="nav-text">13.10. 通过软件包文件来安装软件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-11-卸载软件"><span class="nav-number">13.11.</span> <span class="nav-text">13.11. 卸载软件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-12-经过资源库来更新软件包"><span class="nav-number">13.12.</span> <span class="nav-text">13.12. 经过资源库来更新软件包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-13-经过软件包文件来升级软件"><span class="nav-number">13.13.</span> <span class="nav-text">13.13. 经过软件包文件来升级软件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-14-列出所安装的软件包"><span class="nav-number">13.14.</span> <span class="nav-text">13.14. 列出所安装的软件包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-15-确定是否安装了一个软件包"><span class="nav-number">13.15.</span> <span class="nav-text">13.15. 确定是否安装了一个软件包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-16-显示所安装软件包的信息"><span class="nav-number">13.16.</span> <span class="nav-text">13.16. 显示所安装软件包的信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-17-查找安装了某个文件的软件"><span class="nav-number">13.17.</span> <span class="nav-text">13.17. 查找安装了某个文件的软件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-存储媒介"><span class="nav-number">14.</span> <span class="nav-text">14. 存储媒介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#14-1-挂载和卸载存储设备"><span class="nav-number">14.1.</span> <span class="nav-text">14.1. 挂载和卸载存储设备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-2-查看挂载的文件系统列表"><span class="nav-number">14.2.</span> <span class="nav-text">14.2. 查看挂载的文件系统列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-3-确定设备名称"><span class="nav-number">14.3.</span> <span class="nav-text">14.3. 确定设备名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-4-创建新的文件系统"><span class="nav-number">14.4.</span> <span class="nav-text">14.4. 创建新的文件系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-5-用fdisk命令操作分区"><span class="nav-number">14.5.</span> <span class="nav-text">14.5. 用fdisk命令操作分区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-6-用mkfs命令创建一个新的文件系统"><span class="nav-number">14.6.</span> <span class="nav-text">14.6. 用mkfs命令创建一个新的文件系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-7-测试和修复文件系统"><span class="nav-number">14.7.</span> <span class="nav-text">14.7. 测试和修复文件系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-8-格式化"><span class="nav-number">14.8.</span> <span class="nav-text">14.8. 格式化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-14-9-直接把数据移入-出设备"><span class="nav-number">14.9.</span> <span class="nav-text">1.14.9. 直接把数据移入&#x2F;出设备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-10-创建CD-ROM映像"><span class="nav-number">14.10.</span> <span class="nav-text">14.10. 创建CD-ROM映像</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#14-10-1-创建一个CD-ROM的映像拷贝"><span class="nav-number">14.10.1.</span> <span class="nav-text">14.10.1. 创建一个CD-ROM的映像拷贝</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-10-2-从文件集中创建一个映像"><span class="nav-number">14.10.2.</span> <span class="nav-text">14.10.2. 从文件集中创建一个映像</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-11-写入CD-ROM镜像"><span class="nav-number">14.11.</span> <span class="nav-text">14.11. 写入CD-ROM镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#14-11-1-直接挂载一个ISO镜像"><span class="nav-number">14.11.1.</span> <span class="nav-text">14.11.1. 直接挂载一个ISO镜像</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-12-清楚一张可重写入的CD-ROM"><span class="nav-number">14.12.</span> <span class="nav-text">14.12. 清楚一张可重写入的CD-ROM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-13-写入镜像"><span class="nav-number">14.13.</span> <span class="nav-text">14.13. 写入镜像</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-网络系统"><span class="nav-number">15.</span> <span class="nav-text">15. 网络系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#15-1-检查和检测网络"><span class="nav-number">15.1.</span> <span class="nav-text">15.1. 检查和检测网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-2-ping"><span class="nav-number">15.2.</span> <span class="nav-text">15.2. ping</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-3-traceroute"><span class="nav-number">15.3.</span> <span class="nav-text">15.3. traceroute</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-4-netstat"><span class="nav-number">15.4.</span> <span class="nav-text">15.4. netstat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-5-网络中传输文件"><span class="nav-number">15.5.</span> <span class="nav-text">15.5. 网络中传输文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#15-5-1-ftp"><span class="nav-number">15.5.1.</span> <span class="nav-text">15.5.1. ftp</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-6-lftp-更好的ftp"><span class="nav-number">15.6.</span> <span class="nav-text">15.6. lftp 更好的ftp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-7-wget"><span class="nav-number">15.7.</span> <span class="nav-text">15.7. wget</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-8-与远程主机安全通信"><span class="nav-number">15.8.</span> <span class="nav-text">15.8. 与远程主机安全通信</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#15-8-1-1"><span class="nav-number">15.8.1.</span> <span class="nav-text">15.8.1. 1</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-9-scp-和-sftp"><span class="nav-number">15.9.</span> <span class="nav-text">15.9. scp 和 sftp</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#16-查找文件"><span class="nav-number">16.</span> <span class="nav-text">16. 查找文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#16-1-locate-查找文件的简单方法"><span class="nav-number">16.1.</span> <span class="nav-text">16.1. locate 查找文件的简单方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-2-find-查找文件的复杂方式"><span class="nav-number">16.2.</span> <span class="nav-text">16.2. find 查找文件的复杂方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#16-2-1-Tests"><span class="nav-number">16.2.1.</span> <span class="nav-text">16.2.1. Tests</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-3-操作符"><span class="nav-number">16.3.</span> <span class="nav-text">16.3. 操作符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-4-预定以的操作"><span class="nav-number">16.4.</span> <span class="nav-text">16.4. 预定以的操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-5-用户定义的行为"><span class="nav-number">16.5.</span> <span class="nav-text">16.5. 用户定义的行为</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-6-提高效率"><span class="nav-number">16.6.</span> <span class="nav-text">16.6. 提高效率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-7-xargs"><span class="nav-number">16.7.</span> <span class="nav-text">16.7. xargs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-8-返回操练场"><span class="nav-number">16.8.</span> <span class="nav-text">16.8. 返回操练场</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-9-选项"><span class="nav-number">16.9.</span> <span class="nav-text">16.9. 选项</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#17-归档和备份"><span class="nav-number">17.</span> <span class="nav-text">17. 归档和备份</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#17-1-压缩文件"><span class="nav-number">17.1.</span> <span class="nav-text">17.1. 压缩文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#17-1-1-gzip"><span class="nav-number">17.1.1.</span> <span class="nav-text">17.1.1. gzip</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-1-2-bzip2"><span class="nav-number">17.1.2.</span> <span class="nav-text">17.1.2. bzip2</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-2-归档文件"><span class="nav-number">17.2.</span> <span class="nav-text">17.2. 归档文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#17-2-1-tar"><span class="nav-number">17.2.1.</span> <span class="nav-text">17.2.1. tar</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-3-zip"><span class="nav-number">17.3.</span> <span class="nav-text">17.3. zip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-4-同步文件和目录"><span class="nav-number">17.4.</span> <span class="nav-text">17.4. 同步文件和目录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-正则表达式"><span class="nav-number">18.</span> <span class="nav-text">18. 正则表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#18-1-grep"><span class="nav-number">18.1.</span> <span class="nav-text">18.1. grep</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-2-元字符和文本"><span class="nav-number">18.2.</span> <span class="nav-text">18.2. 元字符和文本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-3-任何字符"><span class="nav-number">18.3.</span> <span class="nav-text">18.3. 任何字符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-4-锚点"><span class="nav-number">18.4.</span> <span class="nav-text">18.4. 锚点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-5-中括号表达式和字符类"><span class="nav-number">18.5.</span> <span class="nav-text">18.5. 中括号表达式和字符类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-6-否定"><span class="nav-number">18.6.</span> <span class="nav-text">18.6. 否定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-7-传统的字符区域"><span class="nav-number">18.7.</span> <span class="nav-text">18.7 传统的字符区域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-8-POSIX-字符集"><span class="nav-number">18.8.</span> <span class="nav-text">18.8 POSIX 字符集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-9-POSIX基本的Vs-扩展的正则表达式"><span class="nav-number">18.9.</span> <span class="nav-text">18.9 POSIX基本的Vs.扩展的正则表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-10-Alternation"><span class="nav-number">18.10.</span> <span class="nav-text">18.10 Alternation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-11-限定符"><span class="nav-number">18.11.</span> <span class="nav-text">18.11 限定符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#18-11-1-匹配零个或一个元素"><span class="nav-number">18.11.1.</span> <span class="nav-text">18.11.1 ? 匹配零个或一个元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-11-2-匹配零个或多个元素"><span class="nav-number">18.11.2.</span> <span class="nav-text">18.11.2 * 匹配零个或多个元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-11-3-匹配一个或多个元素"><span class="nav-number">18.11.3.</span> <span class="nav-text">18.11.3 + - 匹配一个或多个元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-11-4-匹配特定个数的元素"><span class="nav-number">18.11.4.</span> <span class="nav-text">18.11.4 { } 匹配特定个数的元素</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-12-用find查找文件名"><span class="nav-number">18.12.</span> <span class="nav-text">18.12 用find查找文件名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-13-用locate查找文件"><span class="nav-number">18.13.</span> <span class="nav-text">18.13 用locate查找文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-14-在less和vim中查找文本"><span class="nav-number">18.14.</span> <span class="nav-text">18.14 在less和vim中查找文本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-19-文本处理"><span class="nav-number">18.15.</span> <span class="nav-text">1.19 文本处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#19-1-文本应用程序"><span class="nav-number">18.15.1.</span> <span class="nav-text">19.1 文本应用程序</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#19-1-1-文档"><span class="nav-number">18.15.1.1.</span> <span class="nav-text">19.1.1 文档</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#19-1-2-网页"><span class="nav-number">18.15.1.2.</span> <span class="nav-text">19.1.2 网页</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#19-1-3-电子邮件"><span class="nav-number">18.15.1.3.</span> <span class="nav-text">19.1.3 电子邮件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#19-1-4-打印输出"><span class="nav-number">18.15.1.4.</span> <span class="nav-text">19.1.4 打印输出</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#19-1-5-程序源码"><span class="nav-number">18.15.1.5.</span> <span class="nav-text">19.1.5 程序源码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-2-回顾一些老朋友"><span class="nav-number">18.16.</span> <span class="nav-text">19.2 回顾一些老朋友</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#19-2-1-cat"><span class="nav-number">18.16.1.</span> <span class="nav-text">19.2.1 cat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-2-2-sort"><span class="nav-number">18.16.2.</span> <span class="nav-text">19.2.2 sort</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-2-3-uniq"><span class="nav-number">18.16.3.</span> <span class="nav-text">19.2.3 uniq</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-3-切片和切块"><span class="nav-number">18.17.</span> <span class="nav-text">19.3 切片和切块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#19-3-1-cut"><span class="nav-number">18.17.1.</span> <span class="nav-text">19.3.1 cut</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-3-2-paste"><span class="nav-number">18.17.2.</span> <span class="nav-text">19.3.2 paste</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-3-3-join"><span class="nav-number">18.17.3.</span> <span class="nav-text">19.3.3 join</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-20-比较文本"><span class="nav-number">18.18.</span> <span class="nav-text">1.20 比较文本</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#20-1-comm"><span class="nav-number">18.18.1.</span> <span class="nav-text">20.1 comm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-2-diff"><span class="nav-number">18.18.2.</span> <span class="nav-text">20.2 diff</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-3-patch"><span class="nav-number">18.18.3.</span> <span class="nav-text">20.3 patch</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#20-4-运行时编辑"><span class="nav-number">18.19.</span> <span class="nav-text">20.4 运行时编辑</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#20-4-1-tr"><span class="nav-number">18.19.1.</span> <span class="nav-text">20.4.1 tr</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-4-2-sed"><span class="nav-number">18.19.2.</span> <span class="nav-text">20.4.2 sed</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-4-3-aspell"><span class="nav-number">18.19.3.</span> <span class="nav-text">20.4.3 aspell</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-21-格式化输出"><span class="nav-number">19.</span> <span class="nav-text">1.21 格式化输出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#21-1-简单的格式化工具"><span class="nav-number">19.1.</span> <span class="nav-text">21.1 简单的格式化工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#21-1-1-nl-添加行号"><span class="nav-number">19.1.1.</span> <span class="nav-text">21.1.1 nl 添加行号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#21-1-2-fold-限制文件行宽"><span class="nav-number">19.1.2.</span> <span class="nav-text">21.1.2 fold 限制文件行宽</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#21-1-3-fmt-一个简单的文本格式器"><span class="nav-number">19.1.3.</span> <span class="nav-text">21.1.3 fmt 一个简单的文本格式器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-22-在linux下打印"><span class="nav-number">20.</span> <span class="nav-text">1.22 在linux下打印</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-23-编译程序"><span class="nav-number">21.</span> <span class="nav-text">1.23 编译程序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#23-1-什么是编译"><span class="nav-number">21.1.</span> <span class="nav-text">23.1 什么是编译</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#23-1-1-所有程序都是可编译的吗"><span class="nav-number">21.1.1.</span> <span class="nav-text">23.1.1 所有程序都是可编译的吗</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-2-编译一个C语言"><span class="nav-number">21.2.</span> <span class="nav-text">23.2 编译一个C语言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-3-检查源码树"><span class="nav-number">21.3.</span> <span class="nav-text">23.3 检查源码树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-3-1-构建程序"><span class="nav-number">21.4.</span> <span class="nav-text">23.3.1 构建程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-3-2-安装程序"><span class="nav-number">21.5.</span> <span class="nav-text">23.3.2 安装程序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-24-编写第一个Shell脚本"><span class="nav-number">22.</span> <span class="nav-text">1.24 编写第一个Shell脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#24-1-什么是shell脚本"><span class="nav-number">22.1.</span> <span class="nav-text">24.1 什么是shell脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#24-2-怎样编写一个shell脚本"><span class="nav-number">22.2.</span> <span class="nav-text">24.2 怎样编写一个shell脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#24-3-脚本文件格式"><span class="nav-number">22.3.</span> <span class="nav-text">24.3 脚本文件格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#24-4-可执行权限"><span class="nav-number">22.4.</span> <span class="nav-text">24.4 可执行权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#24-5-脚本文件位置"><span class="nav-number">22.5.</span> <span class="nav-text">24.5 脚本文件位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#24-6-更多的格式技巧"><span class="nav-number">22.6.</span> <span class="nav-text">24.6 更多的格式技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#24-6-1-长选项名称"><span class="nav-number">22.6.1.</span> <span class="nav-text">24.6.1 长选项名称</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#24-6-2-缩进和行继续符"><span class="nav-number">22.6.2.</span> <span class="nav-text">24.6.2 缩进和行继续符</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-25-启动一个项目"><span class="nav-number">23.</span> <span class="nav-text">1.25 启动一个项目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#25-1-第一阶段-最小的文档"><span class="nav-number">23.1.</span> <span class="nav-text">25.1 第一阶段:最小的文档</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#25-2-第二阶段-添加一点儿数据"><span class="nav-number">23.2.</span> <span class="nav-text">25.2 第二阶段:添加一点儿数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#25-3-变量和常量"><span class="nav-number">23.3.</span> <span class="nav-text">25.3 变量和常量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#25-3-1-给变量和常量赋值"><span class="nav-number">23.3.1.</span> <span class="nav-text">25.3.1 给变量和常量赋值</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#25-4-Here-Documents"><span class="nav-number">23.4.</span> <span class="nav-text">25.4 Here Documents</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-26-自顶向下设计"><span class="nav-number">24.</span> <span class="nav-text">1.26 自顶向下设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#26-1-shell函数"><span class="nav-number">24.1.</span> <span class="nav-text">26.1 shell函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#26-2-局部变量"><span class="nav-number">24.2.</span> <span class="nav-text">26.2 局部变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#26-3-保持脚本运行"><span class="nav-number">24.3.</span> <span class="nav-text">26.3 保持脚本运行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-27-流程控制-if分支结构"><span class="nav-number">25.</span> <span class="nav-text">1.27 流程控制:if分支结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-27-1-if"><span class="nav-number">25.1.</span> <span class="nav-text">1,27,1 if</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#27-2-退出状态"><span class="nav-number">25.2.</span> <span class="nav-text">27.2 退出状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#27-3-测试"><span class="nav-number">25.3.</span> <span class="nav-text">27.3 测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#27-3-1-文件表达式"><span class="nav-number">25.3.1.</span> <span class="nav-text">27.3.1 文件表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#27-3-2-字符串表达式"><span class="nav-number">25.3.2.</span> <span class="nav-text">27.3.2 字符串表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#27-3-3-整型表达式"><span class="nav-number">25.3.3.</span> <span class="nav-text">27.3.3 整型表达式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#27-4-更现代的测试版本"><span class="nav-number">25.4.</span> <span class="nav-text">27.4 更现代的测试版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#27-5-为整数设计"><span class="nav-number">25.5.</span> <span class="nav-text">27.5 (()) 为整数设计</span></a></li></ol></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">核桃人</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">4</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">1</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">4</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-
-
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">核桃人</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
-  </div>
-
-        
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
-
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
-
-  
-
-
-
-
-  
-<script src="/js/local-search.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
-
-</body>
-</html>
+<h3 id="27-5-为整数设计"><a href="#27-5-为整数设计" class="headerlink" title="27.5 (()) 为整数设计"></a>27.5 (()) 为整数设计</h3>]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>shell</tag>
+      </tags>
+  </entry>
+</search>
